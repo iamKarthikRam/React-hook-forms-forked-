@@ -12,13 +12,15 @@ export default function App() {
     register,
     handleSubmit,
     setError,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<FromFields>({
+    mode: "onChange",
     defaultValues: {
       email: "test@test.com",
     },
   });
   const onSubmit: SubmitHandler<FromFields> = async (data) => {
+    console.log("isvalid", isValid);
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       throw new Error();
@@ -54,7 +56,9 @@ export default function App() {
           type="password"
         />
         {errors.password && <div>{errors.password.message}</div>}
-        <button type="submit">Submit</button>
+        <button type="submit" disabled={!isValid ? true : false}>
+          Submit
+        </button>
         {/* {errors.root && <div>{errors.root.message}</div>}  for root error display */}
       </form>
     </div>
